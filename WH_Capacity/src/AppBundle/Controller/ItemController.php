@@ -5,7 +5,14 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Item;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Serializer\Encoder\CsvEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class ItemController extends Controller
 {
@@ -39,7 +46,7 @@ class ItemController extends Controller
 
         $em->remove($item);
         $em->flush();
-        return $this->redirectToRoute('item');
+        return $this->redirectToRoute('items');
     }
 
     /**
@@ -74,7 +81,7 @@ class ItemController extends Controller
 
         }
 
-        return $this->redirectToRoute('item');
+        return $this->redirectToRoute('items');
     }
 
     /**
