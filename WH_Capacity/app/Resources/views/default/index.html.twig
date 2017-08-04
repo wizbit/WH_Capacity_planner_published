@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'form/fields.html.twig' %}
+
+{% block body %}
+
+<div id="SalesOrders" class="tabcontent">
+    <div>
+        <table class="table">
+            <thead>
+                <tr><th>Id</th><th>Ref</th><th>Date Ordered</th><th>Date Shipped</th>
+                    <th>
+                        <a class="button is-danger is-outlined" href="{{ path('delete_all_orders') }}">
+                            <span>Delete All</span>
+                            <span class="icon is-small">
+                                <i class="fa fa-times"></i>
+                            </span>
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.orderRef }}</td>
+                    <td>{{ order.dateOrdered|date('d/m/Y') }}</td>
+                    <td>{% if order.dateShipped %}{{ order.dateShipped|date('d/m/Y') }}{% endif %}</td>
+                    <td>
+                        <a class="button is-danger is-outlined" href="{{ path('delete_order', {'id': order.id}) }}">
+                            <span>Delete</span>
+                            <span class="icon is-small">
+                                <i class="fa fa-times"></i>
+                            </span>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">No Orders</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+    <div>
+        <h4>Upload Sales Orders</h4>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

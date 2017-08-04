@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'form/fields.html.twig' %}
+
+{% block body %}
+
+<div id="Items" class="tabcontent">
+    <div>
+        <table class="table">
+            <thead>
+                <tr><th>Id</th><th>Code</th><th>Description</th><th>Length</th><th>Width</th><th>Height</th><th>ABC</th>
+                    <th>
+                        <a class="button is-danger is-outlined" href="{{ path('delete_all_items') }}">
+                            <span>Delete All</span>
+                            <span class="icon is-small">
+                                <i class="fa fa-times"></i>
+                            </span>
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.code }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.length }}</td>
+					<td>{{ item.width }}</td>
+					<td>{{ item.height }}</td>
+					<td>{{ item.abc }}</td>
+                    <td>
+                        <a class="button is-danger is-outlined" href="{{ path('delete_item', {'id': item.id}) }}">
+                            <span>Delete</span>
+                            <span class="icon is-small">
+                                <i class="fa fa-times"></i>
+                            </span>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">No Items</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+    <div>
+        <h4>Upload Items</h4>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Warehouse Capacity Planner{% endblock %}</title>
+        <link rel="stylesheet" href="{{ asset('css/bulma.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}" />
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        <nav class="navbar">
+            <div class="navbar-menu">
+                <a class="navbar-item is-tab {{ app.request.requestUri == path('homepage') ? 'is-active' }}" href="{{ path('homepage') }}">
+                    Sales Orders
+                </a>
+                <a class="navbar-item is-tab {{ app.request.requestUri == path('items') ? 'is-active' }}" href="{{ path('items') }}">
+                    Items
+                </a>
+                <a class="navbar-item is-tab {{ app.request.requestUri == path('items') ? 'is-active' }}" href="{{ path('items') }}">
+                    Also Items
+                </a>
+            </div>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+        {% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
