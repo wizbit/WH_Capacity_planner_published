@@ -3,6 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Item;
+use AppBundle\Entity\Owner;
+use AppBundle\Service\Prediction;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -16,6 +19,20 @@ use Symfony\Component\Serializer\Serializer;
 
 class ItemController extends Controller
 {
+    /**
+     * @var Prediction
+     */
+    private $prediction;
+
+    /**
+     * ItemController constructor.
+     * @param Prediction $prediction
+     */
+    public function __construct(Prediction $prediction)
+    {
+        $this->prediction = $prediction;
+    }
+
     /**
      * @Route("/items", name="items", methods={"GET"})
      */
@@ -66,15 +83,32 @@ class ItemController extends Controller
 
             $em = $this->getDoctrine()->getManager();
 
+            $ownerRepository = $this->getDoctrine()->getRepository(Owner::class);
+            $owners = [];
+
             foreach($rawItems as $rawItem) {
                 $item = new Item();
                 $item->setCode($rawItem['Item Code']);
-				$item->setOwner($rawItem['Owner']);
+
+                if (isset($owners[$rawItem['Owner']])) {
+                    $item->setOwner($owners[$rawItem['Owner']]);
+                } else {
+                    $owner = $ownerRepository->findBy(['name' => $rawItem['Owner']]);
+                    if ($owner === null) {
+                        $owner = new Owner();
+                        $owner->setName($rawItem['Owner']);
+                        $em->persist($owner);
+                    }
+
+                    $owners[$rawItem['Owner']] = $owner;
+                    $item->setOwner($owner);
+                }
+
                 $item->setDescription($rawItem['Description']);
                 $item->setLength($rawItem['Length']);
-				$item->setWidth($rawItem['Width']);
-				$item->setHeight($rawItem['Height']);
-				$item->setAbc($rawItem['ABC']);
+                $item->setWidth($rawItem['Width']);
+                $item->setHeight($rawItem['Height']);
+                $item->setAbc($rawItem['ABC']);
                 $em->persist($item);
             }
 
@@ -93,6 +127,16 @@ class ItemController extends Controller
         $repo = $this->getDoctrine()->getRepository(Item::class);
         $repo->deleteAll();
         return $this->redirectToRoute('items');
+    }
+
+    /**
+     * @Route("/items/{id}/predict", name="predict", methods={"GET"}, requirements={"id": "\d+"})
+     * @ParamConverter("item")
+     */
+    public function predictAction(Item $item)
+    {
+        $date = $this->prediction->predictRunOutOfItem($item);
+        return $this->render('default/prediction.html.twig', ['date' => $date]);
     }
 
     private function createItemForm($data = null)

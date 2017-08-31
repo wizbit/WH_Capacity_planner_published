@@ -3,15 +3,16 @@
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ForecastOrders
  *
  * @ORM\Table(name="forecast_orders")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ForecastOrdersRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ForecastOrderRepository")
  */
-class ForecastOrders
+class ForecastOrder
 {
     /**
      * @var int
@@ -23,18 +24,16 @@ class ForecastOrders
     private $id;
 
     /**
-     * @var string
+     * @var Owner
      *
-     * @ORM\Column(name="Owner", type="string", length=50)
+     * @ORM\ManyToOne(targetEntity="Owner", inversedBy="forecastOrders", cascade={"all"})
      */
     private $owner;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="itemCode", type="string", length=50)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ForecastOrderItem", mappedBy="forecastOrder", cascade={"all"})
      */
-    private $itemCode;
+    private $forecastOrderItems;
 
     /**
      * @var \DateTime
@@ -44,12 +43,12 @@ class ForecastOrders
     private $shippedDate;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="qtyShipped", type="integer")
+     * ForecastOrder constructor.
      */
-    private $qtyShipped;
-
+    public function __construct()
+    {
+        $this->forecastOrderItems = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -64,11 +63,11 @@ class ForecastOrders
     /**
      * Set owner
      *
-     * @param string $owner
+     * @param Owner $owner
      *
-     * @return ForecastOrders
+     * @return ForecastOrder
      */
-    public function setOwner($owner)
+    public function setOwner(Owner $owner)
     {
         $this->owner = $owner;
 
@@ -78,35 +77,11 @@ class ForecastOrders
     /**
      * Get owner
      *
-     * @return string
+     * @return Owner
      */
-    public function getOwner()
+    public function getOwner(): Owner
     {
         return $this->owner;
-    }
-
-    /**
-     * Set itemCode
-     *
-     * @param string $itemCode
-     *
-     * @return ForecastOrders
-     */
-    public function setItemCode($itemCode)
-    {
-        $this->itemCode = $itemCode;
-
-        return $this;
-    }
-
-    /**
-     * Get itemCode
-     *
-     * @return string
-     */
-    public function getItemCode()
-    {
-        return $this->itemCode;
     }
 
     /**
@@ -114,7 +89,7 @@ class ForecastOrders
      *
      * @param \DateTime $shippedDate
      *
-     * @return ForecastOrders
+     * @return ForecastOrder
      */
     public function setShippedDate($shippedDate)
     {
@@ -134,27 +109,16 @@ class ForecastOrders
     }
 
     /**
-     * Set qtyShipped
-     *
-     * @param integer $qtyShipped
-     *
-     * @return ForecastOrders
+     * @return Collection
      */
-    public function setQtyShipped($qtyShipped)
+    public function getForecastOrderItems()
     {
-        $this->qtyShipped = $qtyShipped;
-
-        return $this;
+        return $this->forecastOrderItems;
     }
 
-    /**
-     * Get qtyShipped
-     *
-     * @return int
-     */
-    public function getQtyShipped()
+    public function addItem($item, $q)
     {
-        return $this->qtyShipped;
+        $this->forecastOrderItems->add(new ForecastOrderItem($this, $item, $q));
     }
 }
 
