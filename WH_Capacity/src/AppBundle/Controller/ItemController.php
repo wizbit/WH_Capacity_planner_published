@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Item;
+use AppBundle\Entity\Owner;
 use AppBundle\Service\Prediction;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -82,15 +83,32 @@ class ItemController extends Controller
 
             $em = $this->getDoctrine()->getManager();
 
+            $ownerRepository = $this->getDoctrine()->getRepository(Owner::class);
+            $owners = [];
+
             foreach($rawItems as $rawItem) {
                 $item = new Item();
                 $item->setCode($rawItem['Item Code']);
-				$item->setOwner($rawItem['Owner']);
+
+                if (isset($owners[$rawItem['Owner']])) {
+                    $item->setOwner($owners[$rawItem['Owner']]);
+                } else {
+                    $owner = $ownerRepository->findBy(['name' => $rawItem['Owner']]);
+                    if ($owner === null) {
+                        $owner = new Owner();
+                        $owner->setName($rawItem['Owner']);
+                        $em->persist($owner);
+                    }
+
+                    $owners[$rawItem['Owner']] = $owner;
+                    $item->setOwner($owner);
+                }
+
                 $item->setDescription($rawItem['Description']);
                 $item->setLength($rawItem['Length']);
-				$item->setWidth($rawItem['Width']);
-				$item->setHeight($rawItem['Height']);
-				$item->setAbc($rawItem['ABC']);
+                $item->setWidth($rawItem['Width']);
+                $item->setHeight($rawItem['Height']);
+                $item->setAbc($rawItem['ABC']);
                 $em->persist($item);
             }
 
