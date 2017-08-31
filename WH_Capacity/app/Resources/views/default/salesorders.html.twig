@@ -8,7 +8,7 @@
     <div>
         <table class="table">
             <thead>
-                <tr><th>Id</th><th>Owner</th><th>Code</th><th>Description</th><th>Length</th><th>Width</th><th>Height</th><th>ABC</th>
+                <tr><th>Id</th><th>Code</th><th>Description</th><th>Length</th><th>Width</th><th>Height</th><th>ABC</th>
                     <th>
                         <a class="button is-danger is-outlined" href="{{ path('delete_all_items') }}">
                             <span>Delete All</span>
@@ -23,7 +23,6 @@
             {% for item in items %}
                 <tr>
                     <td>{{ item.id }}</td>
-					<td>{{ item.owner }}</td>
                     <td>{{ item.code }}</td>
                     <td>{{ item.description }}</td>
                     <td>{{ item.length }}</td>

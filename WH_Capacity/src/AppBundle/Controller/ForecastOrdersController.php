@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\SalesOrder;
+use AppBundle\Entity\ForecastOrders;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -18,47 +18,47 @@ use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-class SalesOrderController extends Controller
+class ForecastOrdersController extends Controller
 {
     /**
-     * @Route("/", name="homepage", methods={"GET"})
+     * @Route("/forecastOrders", name="forecastOrders", methods={"GET"})
      */
     public function indexAction(Request $request)
     {
-        $repo = $this->getDoctrine()->getRepository(SalesOrder::class);
-        $salesOrders = $repo->findAll();
-
-        $form = $this->createSalesOrderForm();
+        $Repository = $this->getDoctrine()->getRepository(ForecastOrders::class);
+        $forecastOrders = $Repository->findAll();
+		
+		$form = $this->createForecastOrderForm();
 
         // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', [
-            'orders' => $salesOrders,
-            'form' => $form->createView()
-        ]);
+        return $this->render('default/forecastOrders.html.twig', [
+			'forecastOrders' => $forecastOrders,
+			'form' => $form->createView()
+		]);
     }
 
     /**
-     * @Route("/salesorder/{id}/delete", name="delete_order")
+     * @Route("/forecastOrders/{id}/delete", name="delete_forecastOrder")
      */
     public function deleteAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $order = $em->getRepository(SalesOrder::class)->find($id);
-        if (!$order) {
+        $forecastOrder = $em->getRepository(ForecastOrder::class)->find($id);
+        if (!$forecastOrder) {
             throw new NotFoundHttpException();
         }
 
-        $em->remove($order);
+        $em->remove($forecastOrder);
         $em->flush();
-        return $this->redirectToRoute('homepage');
+        return $this->redirectToRoute('forecastOrders');
     }
 
     /**
-     * @Route("/", name="upload_csv", methods={"POST"})
+     * @Route("/forecastOrder", name="upload_forecastOrder_csv", methods={"POST"})
      */
     public function uploadAction(Request $request)
     {
-        $form = $this->createSalesOrderForm();
+        $form = $this->createForecastOrdersForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $file */
@@ -66,41 +66,41 @@ class SalesOrderController extends Controller
 
             $contents = file_get_contents($file->getPathname());
             $serializer = new Serializer([new ObjectNormalizer()], [new CsvEncoder()]);
-            $rawOrders = $serializer->decode($contents, 'csv');
+            $rawForecastOrders = $serializer->decode($contents, 'csv');
 
             $em = $this->getDoctrine()->getManager();
 
-            foreach($rawOrders as $rawOrder) {
-                $salesOrder = new SalesOrder();
-                $salesOrder->setOrderRef($rawOrder['Order Ref']);
-                $salesOrder->setDateOrdered(\DateTime::createFromFormat('d/m/Y H:i', $rawOrder['Date Ordered']));
-                $salesOrder->setDateShipped(\DateTime::createFromFormat('d/m/Y H:i', $rawOrder['Date Shipped']));
-                $em->persist($salesOrder);
+            foreach($rawForecastOrder as $rawForecastOrder) {
+                $forecastOrder = new ForecastOrder();
+                $forecastOrder->setItemCode($rawForecastOrder['Item Code']);
+                $forecastOrder->setShippedDate($rawForecastOrder['Expected Ship Date']);
+                $forecastOrder->setQtyShipped($rawForecastOrder['Expected Qty Shipped']);
+				$forecastOrder->setOwner($rawForecastOrder['Owner']);
+                $em->persist($forecastOrder);
             }
 
             $em->flush();
 
         }
 
-        return $this->redirectToRoute('homepage');
+        return $this->redirectToRoute('ForecastOrders');
     }
 
     /**
-     * @Route("/sales/delete_all", name="delete_all_orders", methods={"GET"})
+     * @Route("/forecastOrders/delete_all", name="delete_all_forecastOrders", methods={"GET"})
      */
     public function deleteAllAction(Request $request)
     {
-        $repo = $this->getDoctrine()->getRepository(SalesOrder::class);
+        $repo = $this->getDoctrine()->getRepository(ForecastOrder::class);
         $repo->deleteAll();
-        return $this->redirectToRoute('homepage');
+        return $this->redirectToRoute('ForecastOrders');
     }
 
-    private function createSalesOrderForm($data = null)
+    private function createForecastOrderForm($data = null)
     {
         return $this->createFormBuilder($data)
             ->add('csv', FileType::class)
             ->add('Upload', SubmitType::class)
             ->getForm();
     }
-
-} 
+}

@@ -4,13 +4,13 @@
 
 {% block body %}
 
-<div id="Items" class="tabcontent">
+<div id="forecastOrders" class="tabcontent">
     <div>
         <table class="table">
             <thead>
-                <tr><th>Id</th><th>Owner</th><th>Code</th><th>Description</th><th>Length</th><th>Width</th><th>Height</th><th>ABC</th>
+                <tr><th>Id</th><th>Owner</th><th>Item Code</th><th>Shipped Date</th><th>QtyShipped</th>
                     <th>
-                        <a class="button is-danger is-outlined" href="{{ path('delete_all_items') }}">
+                        <a class="button is-danger is-outlined" href="{{ path('delete_all_forecastOrders') }}">
                             <span>Delete All</span>
                             <span class="icon is-small">
                                 <i class="fa fa-times"></i>
@@ -20,18 +20,15 @@
                 </tr>
             </thead>
             <tbody>
-            {% for item in items %}
+            {% for forecastOrder in forecastOrders %}
                 <tr>
-                    <td>{{ item.id }}</td>
-					<td>{{ item.owner }}</td>
-                    <td>{{ item.code }}</td>
-                    <td>{{ item.description }}</td>
-                    <td>{{ item.length }}</td>
-					<td>{{ item.width }}</td>
-					<td>{{ item.height }}</td>
-					<td>{{ item.abc }}</td>
+ 					<td>{{ forecastOrders.owner }}</td>                   
+					<td>{{ forecastOrders.id }}</td>
+                    <td>{{ forecastOrders.itemCode }}</td>
+                    <td>{{ forecastOrders.ShippedDate }}</td>
+                    <td>{{ forecastOrders.QtyShipped }}</td>
                     <td>
-                        <a class="button is-danger is-outlined" href="{{ path('delete_item', {'id': item.id}) }}">
+                        <a class="button is-danger is-outlined" href="{{ path('delete_forecastOrder', {'id': forecastOrders.id}) }}">
                             <span>Delete</span>
                             <span class="icon is-small">
                                 <i class="fa fa-times"></i>
@@ -41,7 +38,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="4">No Items</td>
+                    <td colspan="4">No Forecast Orders</td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -50,7 +47,7 @@
 </div>
 
     <div>
-        <h4>Upload Items</h4>
+        <h4>Upload Forecast Orders</h4>
         {{ form_start(form) }}
         {{ form_widget(form) }}
         {{ form_end(form) }}

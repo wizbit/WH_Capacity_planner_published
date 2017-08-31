@@ -23,6 +23,11 @@ class Item
      */
     private $code;
 
+	 /**
+     * @ORM\Column(type="string")
+     */
+    private $owner;
+	
     /**
      * @ORM\Column(type="text")
      */
@@ -163,5 +168,21 @@ class Item
     public function setAbc($abc)
     {
         $this->abc = $abc;
+    }
+	
+	 /**
+     * @return mixed
+     */
+    public function getowner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param mixed $owner
+     */
+    public function setOwner($owner)
+    {
+        $this->owner = $owner;
     }
 }
