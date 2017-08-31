@@ -26,12 +26,12 @@ class ForecastOrder
     /**
      * @var Owner
      *
-     * @ORM\ManyToOne(targetEntity="Owner", inversedBy="forecastOrders", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Owner", inversedBy="forecastOrders", cascade={"persist"})
      */
     private $owner;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ForecastOrderItem", mappedBy="forecastOrder", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ForecastOrderItem", mappedBy="forecastOrder", cascade={"persist"})
      */
     private $forecastOrderItems;
 

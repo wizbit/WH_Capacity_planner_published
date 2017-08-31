@@ -44,12 +44,12 @@ class SalesOrder
     private $dateShipped;
 
     /**
-     * @ORM\OneToMany(targetEntity="SalesOrderItem", mappedBy="salesOrder", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="SalesOrderItem", mappedBy="salesOrder", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $salesOrderItems;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Owner", inversedBy="salesOrders", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Owner", inversedBy="salesOrders", cascade={"persist"})
      */
     private $owner;
 

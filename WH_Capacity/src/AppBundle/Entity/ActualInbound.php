@@ -45,7 +45,7 @@ class ActualInbound
     /**
      * @var Owner
      *
-     * @ORM\ManyToOne(targetEntity="Owner", inversedBy="actualInbound", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Owner", inversedBy="actualInbound", cascade={"persist"})
      */
     private $owner;
 
