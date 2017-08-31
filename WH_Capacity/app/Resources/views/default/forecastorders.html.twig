@@ -22,7 +22,7 @@
             <tbody>
             {% for forecastOrder in forecastOrders %}
                 <tr>
- 					<td>{{ forecastOrders.owner }}</td>                   
+ 					<td>{{ forecastOrders.owner.name }}</td>
 					<td>{{ forecastOrders.id }}</td>
                     <td>{{ forecastOrders.itemCode }}</td>
                     <td>{{ forecastOrders.ShippedDate }}</td>

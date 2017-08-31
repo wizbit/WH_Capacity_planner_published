@@ -11,11 +11,11 @@ use Doctrine\ORM\EntityRepository;
  * repository methods below.
  */
 
-class ForecastOrdersRepository extends EntityRepository
+class ForecastOrderRepository extends EntityRepository
 {
 	public function deleteAll()
     {
-        $this->getEntityManager()->createQuery('DELETE FROM AppBundle:ForecastOrders')
+        $this->getEntityManager()->createQuery('DELETE FROM AppBundle:ForecastOrder')
         ->execute();
     }
 }

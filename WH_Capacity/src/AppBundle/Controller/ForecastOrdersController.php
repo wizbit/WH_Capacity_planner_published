@@ -2,17 +2,13 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\ForecastOrders;
+use AppBundle\Entity\ForecastOrder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -25,7 +21,7 @@ class ForecastOrdersController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $Repository = $this->getDoctrine()->getRepository(ForecastOrders::class);
+        $Repository = $this->getDoctrine()->getRepository(ForecastOrder::class);
         $forecastOrders = $Repository->findAll();
 		
 		$form = $this->createForecastOrderForm();
@@ -58,7 +54,7 @@ class ForecastOrdersController extends Controller
      */
     public function uploadAction(Request $request)
     {
-        $form = $this->createForecastOrdersForm();
+        $form = $this->createForecastOrderForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $file */
@@ -70,7 +66,7 @@ class ForecastOrdersController extends Controller
 
             $em = $this->getDoctrine()->getManager();
 
-            foreach($rawForecastOrder as $rawForecastOrder) {
+            foreach($rawForecastOrders as $rawForecastOrder) {
                 $forecastOrder = new ForecastOrder();
                 $forecastOrder->setItemCode($rawForecastOrder['Item Code']);
                 $forecastOrder->setShippedDate($rawForecastOrder['Expected Ship Date']);
@@ -83,7 +79,7 @@ class ForecastOrdersController extends Controller
 
         }
 
-        return $this->redirectToRoute('ForecastOrders');
+        return $this->redirectToRoute('forecastOrders');
     }
 
     /**
@@ -93,7 +89,7 @@ class ForecastOrdersController extends Controller
     {
         $repo = $this->getDoctrine()->getRepository(ForecastOrder::class);
         $repo->deleteAll();
-        return $this->redirectToRoute('ForecastOrders');
+        return $this->redirectToRoute('forecastOrders');
     }
 
     private function createForecastOrderForm($data = null)
