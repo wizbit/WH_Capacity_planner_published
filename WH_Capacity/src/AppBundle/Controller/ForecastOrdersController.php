@@ -27,7 +27,7 @@ class ForecastOrdersController extends Controller
 		$form = $this->createForecastOrderForm();
 
         // replace this example code with whatever you need
-        return $this->render('default/forecastOrders.html.twig', [
+        return $this->render('default/forecastorders.html.twig', [
 			'forecastOrders' => $forecastOrders,
 			'form' => $form->createView()
 		]);
