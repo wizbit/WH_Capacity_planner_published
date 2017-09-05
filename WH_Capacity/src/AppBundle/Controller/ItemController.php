@@ -94,10 +94,12 @@ class ItemController extends Controller
                     $item->setOwner($owners[$rawItem['Owner']]);
                 } else {
                     $owner = $ownerRepository->findBy(['name' => $rawItem['Owner']]);
-                    if ($owner === null) {
+                    if (count($owner) === 0) {
                         $owner = new Owner();
                         $owner->setName($rawItem['Owner']);
                         $em->persist($owner);
+                    } else {
+                        $owner = $owner[0];
                     }
 
                     $owners[$rawItem['Owner']] = $owner;
