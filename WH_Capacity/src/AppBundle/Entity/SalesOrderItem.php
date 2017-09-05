@@ -14,6 +14,7 @@ class SalesOrderItem
     /**
      * @ORM\Id()
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\SalesOrder", inversedBy="salesOrderItems")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      * @var SalesOrder
      */
     private $salesOrder;

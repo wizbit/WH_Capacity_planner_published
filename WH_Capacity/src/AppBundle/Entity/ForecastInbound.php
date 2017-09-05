@@ -45,7 +45,7 @@ class ForecastInbound
     /**
      * @var Owner
      *
-     * @ORM\ManyToOne(targetEntity="Owner", inversedBy="forecastInbound", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Owner", inversedBy="forecastInbound", cascade={"persist"})
      */
     private $owner;
 

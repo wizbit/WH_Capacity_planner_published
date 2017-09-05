@@ -27,37 +27,37 @@ class Owner
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\SalesOrder", mappedBy="owner", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\SalesOrder", mappedBy="owner", cascade={"persist"})
      * @var Collection<SalesOrder>
      */
     private $salesOrders;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ForecastOrder", mappedBy="owner", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ForecastOrder", mappedBy="owner", cascade={"persist"})
      * @var Collection<ForecastOrder>
      */
     private $forecastOrders;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Location", mappedBy="owner", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Location", mappedBy="owner", cascade={"persist"})
      * @var Collection<Location>
      */
     private $locations;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ActualInbound", mappedBy="owner", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ActualInbound", mappedBy="owner", cascade={"persist"})
      * @var Collection<ActualInbound>
      */
     private $actualInbounds;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ForecastInbound", mappedBy="owner", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ForecastInbound", mappedBy="owner", cascade={"persist"})
      * @var Collection<ForecastInbound>
      */
     private $forecastInbounds;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Item", mappedBy="owner", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Item", mappedBy="owner", cascade={"persist"})
      * @var Collection<Item>
      */
     private $items;
