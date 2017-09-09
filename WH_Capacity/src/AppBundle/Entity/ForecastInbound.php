@@ -22,11 +22,11 @@ class ForecastInbound
     private $id;
 
     /**
-     * @var string
+     * @var Item
      *
-     * @ORM\Column(name="itemCode", type="string", length=50)
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Item")
      */
-    private $itemCode;
+    private $item;
 
     /**
      * @var \DateTime
@@ -38,17 +38,16 @@ class ForecastInbound
     /**
      * @var int
      *
-     * @ORM\Column(name="expRecQty", type="integer")
+     * @ORM\Column(name="quantity", type="integer")
      */
-    private $expRecQty;
+    private $quantity;
 
     /**
-     * @var string
+     * @var Owner
      *
-     * @ORM\Column(name="owner", type="string", length=50)
+     * @ORM\ManyToOne(targetEntity="Owner", inversedBy="forecastInbound", cascade={"persist"})
      */
     private $owner;
-
 
     /**
      * Get id
@@ -63,13 +62,13 @@ class ForecastInbound
     /**
      * Set itemCode
      *
-     * @param string $itemCode
+     * @param Item $item
      *
      * @return ForecastInbound
      */
-    public function setItemCode($itemCode)
+    public function setItem($item)
     {
-        $this->itemCode = $itemCode;
+        $this->item = $item;
 
         return $this;
     }
@@ -77,11 +76,11 @@ class ForecastInbound
     /**
      * Get itemCode
      *
-     * @return string
+     * @return Item
      */
-    public function getItemCode()
+    public function getItem()
     {
-        return $this->itemCode;
+        return $this->item;
     }
 
     /**
@@ -109,37 +108,37 @@ class ForecastInbound
     }
 
     /**
-     * Set expRecQty
+     * Set quantity
      *
-     * @param integer $expRecQty
+     * @param integer $quantity
      *
      * @return ForecastInbound
      */
-    public function setExpRecQty($expRecQty)
+    public function setQuantity($quantity)
     {
-        $this->expRecQty = $expRecQty;
+        $this->quantity = $quantity;
 
         return $this;
     }
 
     /**
-     * Get expRecQty
+     * Get quantity
      *
      * @return int
      */
-    public function getExpRecQty()
+    public function getQuantity()
     {
-        return $this->expRecQty;
+        return $this->quantity;
     }
 
     /**
      * Set owner
      *
-     * @param string $owner
+     * @param Owner $owner
      *
      * @return ForecastInbound
      */
-    public function setOwner($owner)
+    public function setOwner(Owner $owner)
     {
         $this->owner = $owner;
 
@@ -149,9 +148,9 @@ class ForecastInbound
     /**
      * Get owner
      *
-     * @return string
+     * @return Owner
      */
-    public function getOwner()
+    public function getOwner(): Owner
     {
         return $this->owner;
     }

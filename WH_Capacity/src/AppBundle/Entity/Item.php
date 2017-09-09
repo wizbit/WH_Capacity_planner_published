@@ -23,47 +23,43 @@ class Item
      */
     private $code;
 
-	 /**
-     * @ORM\Column(type="string")
+    /**
+     * @var Owner
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Owner", inversedBy="items")
      */
     private $owner;
 	
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal", nullable=true)
      */
     private $length;
 
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal", nullable=true)
      */
     private $width;
 
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal", nullable=true)
      */
     private $height;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $abc;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="SalesOrder", inversedBy="items", cascade={"all"})
-     */
-    private $salesOrders;
 
     /**
      * SalesOrder constructor.
      */
     public function __construct()
     {
-        $this->salesOrders = new ArrayCollection();
     }
 
     /**
@@ -171,17 +167,17 @@ class Item
     }
 	
 	 /**
-     * @return mixed
+     * @return Owner
      */
-    public function getowner()
+    public function getOwner(): Owner
     {
         return $this->owner;
     }
 
     /**
-     * @param mixed $owner
+     * @param Owner $owner
      */
-    public function setOwner($owner)
+    public function setOwner(Owner $owner)
     {
         $this->owner = $owner;
     }

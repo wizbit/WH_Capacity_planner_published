@@ -44,16 +44,21 @@ class SalesOrder
     private $dateShipped;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Item", mappedBy="salesOrders", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="SalesOrderItem", mappedBy="salesOrder", cascade={"persist","remove"}, orphanRemoval=true)
      */
-    private $items;
+    private $salesOrderItems;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Owner", inversedBy="salesOrders", cascade={"persist"})
+     */
+    private $owner;
 
     /**
      * SalesOrder constructor.
      */
     public function __construct()
     {
-        $this->items = new ArrayCollection();
+        $this->salesOrderItems = new ArrayCollection();
     }
 
     /**
@@ -136,6 +141,36 @@ class SalesOrder
     public function getDateShipped()
     {
         return $this->dateShipped;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSalesOrderItems()
+    {
+        return $this->salesOrderItems;
+    }
+
+    public function addItem($item, $q)
+    {
+        $this->salesOrderItems->add(new SalesOrderItem($this, $item, $q));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param Owner $owner
+     */
+    public function setOwner(Owner $owner)
+    {
+        $this->owner = $owner;
+        $this->owner->getSalesOrders()->add($this);
     }
 }
 

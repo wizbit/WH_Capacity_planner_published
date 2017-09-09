@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="locations")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LocationsRepository")
  */
-class Locations
+class Location
 {
     /**
      * @var int
@@ -71,9 +71,9 @@ class Locations
     private $aBC;
 
     /**
-     * @var string
+     * @var Owner
      *
-     * @ORM\Column(name="owner", type="string", length=50)
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Owner", inversedBy="locations")
      */
     private $owner;
 
@@ -84,6 +84,20 @@ class Locations
      */
     private $qty;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $pickRate = 0;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $putAwayRate = 0;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $packRate = 0;
 
     /**
      * Get id
@@ -100,7 +114,7 @@ class Locations
      *
      * @param string $type
      *
-     * @return Locations
+     * @return Location
      */
     public function setType($type)
     {
@@ -124,7 +138,7 @@ class Locations
      *
      * @param string $zone
      *
-     * @return Locations
+     * @return Location
      */
     public function setZone($zone)
     {
@@ -148,7 +162,7 @@ class Locations
      *
      * @param string $length
      *
-     * @return Locations
+     * @return Location
      */
     public function setLength($length)
     {
@@ -172,7 +186,7 @@ class Locations
      *
      * @param integer $weightLimit
      *
-     * @return Locations
+     * @return Location
      */
     public function setWeightLimit($weightLimit)
     {
@@ -196,7 +210,7 @@ class Locations
      *
      * @param string $height
      *
-     * @return Locations
+     * @return Location
      */
     public function setHeight($height)
     {
@@ -220,7 +234,7 @@ class Locations
      *
      * @param string $width
      *
-     * @return Locations
+     * @return Location
      */
     public function setWidth($width)
     {
@@ -244,7 +258,7 @@ class Locations
      *
      * @param string $aBC
      *
-     * @return Locations
+     * @return Location
      */
     public function setABC($aBC)
     {
@@ -266,11 +280,11 @@ class Locations
     /**
      * Set owner
      *
-     * @param string $owner
+     * @param Owner $owner
      *
-     * @return Locations
+     * @return Location
      */
-    public function setOwner($owner)
+    public function setOwner(Owner $owner)
     {
         $this->owner = $owner;
 
@@ -280,9 +294,9 @@ class Locations
     /**
      * Get owner
      *
-     * @return string
+     * @return Owner
      */
-    public function getOwner()
+    public function getOwner(): Owner
     {
         return $this->owner;
     }
@@ -292,7 +306,7 @@ class Locations
      *
      * @param integer $qty
      *
-     * @return Locations
+     * @return Location
      */
     public function setQty($qty)
     {
@@ -309,6 +323,54 @@ class Locations
     public function getQty()
     {
         return $this->qty;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPickRate()
+    {
+        return $this->pickRate;
+    }
+
+    /**
+     * @param mixed $pickRate
+     */
+    public function setPickRate($pickRate)
+    {
+        $this->pickRate = $pickRate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPutAwayRate()
+    {
+        return $this->putAwayRate;
+    }
+
+    /**
+     * @param mixed $putAwayRate
+     */
+    public function setPutAwayRate($putAwayRate)
+    {
+        $this->putAwayRate = $putAwayRate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPackRate()
+    {
+        return $this->packRate;
+    }
+
+    /**
+     * @param mixed $packRate
+     */
+    public function setPackRate($packRate)
+    {
+        $this->packRate = $packRate;
     }
 }
 

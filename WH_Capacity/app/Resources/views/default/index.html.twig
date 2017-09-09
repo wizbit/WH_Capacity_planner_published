@@ -9,6 +9,7 @@
         <table class="table">
             <thead>
                 <tr><th>Id</th><th>Ref</th><th>Date Ordered</th><th>Date Shipped</th>
+                    <th>Items</th>
                     <th>
                         <a class="button is-danger is-outlined" href="{{ path('delete_all_orders') }}">
                             <span>Delete All</span>
@@ -26,6 +27,17 @@
                     <td>{{ order.orderRef }}</td>
                     <td>{{ order.dateOrdered|date('d/m/Y') }}</td>
                     <td>{% if order.dateShipped %}{{ order.dateShipped|date('d/m/Y') }}{% endif %}</td>
+                    <td>
+                        <table>
+                            <tr><th>Code</th><th>Quantity</th></tr>
+                            {% for salesOrderItem in order.salesOrderItems %}
+                                <tr>
+                                    <td>{{ salesOrderItem.item.code }}</td>
+                                    <td>{{ salesOrderItem.quantity }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </td>
                     <td>
                         <a class="button is-danger is-outlined" href="{{ path('delete_order', {'id': order.id}) }}">
                             <span>Delete</span>

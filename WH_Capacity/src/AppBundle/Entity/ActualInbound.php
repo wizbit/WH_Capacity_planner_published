@@ -22,11 +22,11 @@ class ActualInbound
     private $id;
 
     /**
-     * @var string
+     * @var Item
      *
-     * @ORM\Column(name="itemCode", type="string", length=50)
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Item")
      */
-    private $itemCode;
+    private $item;
 
     /**
      * @var \DateTime
@@ -38,17 +38,16 @@ class ActualInbound
     /**
      * @var int
      *
-     * @ORM\Column(name="recQty", type="integer")
+     * @ORM\Column(name="quantity", type="integer")
      */
-    private $recQty;
+    private $quantity;
 
     /**
-     * @var string
+     * @var Owner
      *
-     * @ORM\Column(name="owner", type="string", length=50)
+     * @ORM\ManyToOne(targetEntity="Owner", inversedBy="actualInbound", cascade={"persist"})
      */
     private $owner;
-
 
     /**
      * Get id
@@ -63,13 +62,13 @@ class ActualInbound
     /**
      * Set itemCode
      *
-     * @param string $itemCode
+     * @param Item $item
      *
      * @return ActualInbound
      */
-    public function setItemCode($itemCode)
+    public function setItem($item)
     {
-        $this->itemCode = $itemCode;
+        $this->item = $item;
 
         return $this;
     }
@@ -77,11 +76,11 @@ class ActualInbound
     /**
      * Get itemCode
      *
-     * @return string
+     * @return Item
      */
-    public function getItemCode()
+    public function getItem()
     {
-        return $this->itemCode;
+        return $this->item;
     }
 
     /**
@@ -109,37 +108,37 @@ class ActualInbound
     }
 
     /**
-     * Set recQty
+     * Set quantity
      *
-     * @param integer $recQty
+     * @param integer $quantity
      *
      * @return ActualInbound
      */
-    public function setRecQty($recQty)
+    public function setQuantity($quantity)
     {
-        $this->recQty = $recQty;
+        $this->quantity = $quantity;
 
         return $this;
     }
 
     /**
-     * Get recQty
+     * Get quantity
      *
      * @return int
      */
-    public function getRecQty()
+    public function getQuantity()
     {
-        return $this->recQty;
+        return $this->quantity;
     }
 
     /**
      * Set owner
      *
-     * @param string $owner
+     * @param Owner $owner
      *
      * @return ActualInbound
      */
-    public function setOwner($owner)
+    public function setOwner(Owner $owner)
     {
         $this->owner = $owner;
 
@@ -149,9 +148,9 @@ class ActualInbound
     /**
      * Get owner
      *
-     * @return string
+     * @return Owner
      */
-    public function getOwner()
+    public function getOwner(): Owner
     {
         return $this->owner;
     }

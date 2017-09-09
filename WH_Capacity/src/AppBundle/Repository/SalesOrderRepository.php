@@ -17,4 +17,11 @@ class SalesOrderRepository extends EntityRepository
         $this->getEntityManager()->createQuery('DELETE FROM AppBundle:SalesOrder')
         ->execute();
     }
+
+    public function findAll()
+    {
+        return $this->getEntityManager()
+            ->createQuery('SELECT s, so, i FROM AppBundle:SalesOrder s LEFT JOIN s.salesOrderItems so LEFT JOIN so.item i')
+            ->execute();
+    }
 }
